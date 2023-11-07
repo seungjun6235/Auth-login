@@ -6,3 +6,4 @@ class ArticleForm(forms.ModelForm):
         model = Article
         # fields = '__all__'
         exclude = ('user',)
+    
