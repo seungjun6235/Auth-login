@@ -13,6 +13,7 @@ def index(request):
 
     return render(request,'index.html',context)
 
+
 @login_required #@ create전에 이거 먼저 실행해야 되게 만듬
 def create(request):
     if request.method == 'POST':
@@ -31,6 +32,7 @@ def create(request):
     
     return render(request,'form.html', context)
 
+
 def detail(request,id):
     article = Article.objects.get(id=id)
     form = CommentForm()
@@ -41,6 +43,17 @@ def detail(request,id):
     }
 
     return render(request,'detail.html',context)
+
+
+@login_required
+def delete(request,id):
+    article = Article.objects.get(id=id)
+
+    if request.user == article.user:
+        article.delete()
+
+    return redirect('articles:index')
+
 
 @login_required
 def comment_create(request, article_id):
