@@ -2,6 +2,16 @@
 
 {% block body %}
     <h1>{{article.title}}</h1>
-    <h1>{{article.content}}</h1>
-    <h1>{{article.user}}</h1>
+    <p>{{article.content}}</p>
+    <p>{{article.user}}</p>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'articles:comment_create' article_id=article.id %}" method='POST'>
+            {% csrf_token %}
+            {{form}}
+            <input type="submit">
+        </form>
+    {% endif %}
 {% endblock %}
