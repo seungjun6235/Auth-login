@@ -56,6 +56,28 @@ def delete(request,id):
 
 
 @login_required
+def update(request, id):
+    article = Article.objects.get(id=id)
+
+    if request.user != article.user:
+        return redirect('articles:detail',id=id)
+    
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article) #기존정보 + 새로운정보 덮어씌우기
+        if form.is_valid():
+            form.save()
+            return redirect('articles:detail', id=id)
+    else:
+        form = ArticleForm(instance=article) # 기존 정보
+
+    context = {
+        'form': form
+    }
+
+    return render(request,'form.html',context)
+
+
+@login_required
 def comment_create(request, article_id):
     form = CommentForm(request.POST)
     # article = Article.objects.get(id=id)
